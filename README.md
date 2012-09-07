@@ -1,4 +1,4 @@
-IIJ for Google App Engine
+IIJmio Data-Logger for Google App Engine
 ====================================
 
 About
