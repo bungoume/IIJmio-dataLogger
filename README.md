@@ -35,3 +35,7 @@ Layout, form, table, and button styles provided by [Bootstrap][bootstrap]
 HTML5 detection provided by [Modernizr 2][modernizr] (configured with all features)
 
 [flaskgaetemplate]: https://github.com/kamalgill/flask-appengine-template
+[bootstrap]: http://twitter.github.com/bootstrap
+[flask]: http://flask.pocoo.org
+[jinja2]: http://jinja.pocoo.org/2/documentation/
+[modernizr]: http://www.modernizr.com/
