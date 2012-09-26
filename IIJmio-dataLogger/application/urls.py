@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 urls.py
 
@@ -19,13 +20,12 @@ app.add_url_rule('/_ah/warmup', 'warmup', view_func=views.warmup)
 # Home page
 app.add_url_rule('/', 'home', view_func=views.home)
 
+app.add_url_rule('/cron/set_log', 'set_log', view_func=views.set_log)
+
+app.add_url_rule('/cron/set_detail_log', 'set_detail_log', view_func=views.set_detail_log)
 
 
 #app.add_url_rule('/cron/update', 'update', view_func=views.update)
-
-
-
-
 
 #samples
 
