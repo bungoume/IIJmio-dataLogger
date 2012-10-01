@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 models.py
 
@@ -14,15 +15,11 @@ class UserModel(db.Model):
     service_code = db.StringProperty(required=True, indexed=False)
 
 
-# ファミリーなら3つのsim_service_code
-class ServiceModel(db.Model):
+# ファミリーなら3つのsim
+class SimInfoModel(db.Model):
     service_code = db.StringProperty(required=True)
     sim_service_code = db.StringProperty(required=True)
-
-
-class SimInfoModel(db.Model):
-    sim_service_code = db.StringProperty(required=True)
-    phone_number = db.IntegerProperty(required=True)
+    phone_number = db.StringProperty(required=True)
     iccid = db.StringProperty(required=True)
     sim_type = db.StringProperty(required=True, indexed=False)
     status = db.StringProperty(required=True,  indexed=False)
@@ -37,12 +34,12 @@ class SimLogModel(db.Model):
 
 class SimDetailLogModel(db.Model):
     iccid = db.StringProperty(required=True)
-    updated_at = db.DateTimeProperty(auto_now=True)
     remaining_coupons = db.IntegerProperty(required=True, indexed=False)
+    updated_at = db.DateTimeProperty(auto_now=True)
 
 
 class ServiceDetailLogModel(db.Model):
     service_code = db.StringProperty(required=True)
-    updated_at = db.DateTimeProperty(auto_now=True)
     total_remaining_amount = db.IntegerProperty(required=True, indexed=False)
     remaining_coupons = db.IntegerProperty(required=True, indexed=False)
+    updated_at = db.DateTimeProperty(auto_now=True)
