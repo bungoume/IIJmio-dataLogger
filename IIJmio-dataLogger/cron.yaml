@@ -1,0 +1,9 @@
+cron:
+- description: set_log
+  url: /cron/set_log
+  schedule: every 10 minutes
+  timezone: Asia/Tokyo
+- description: set_detail_log
+  url: /cron/set_detail_log
+  schedule: every 10 minutes
+  timezone: Asia/Tokyo
