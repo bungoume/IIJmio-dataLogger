@@ -30,16 +30,19 @@ app.add_url_rule('/cron/set_detail_log', 'set_detail_log', view_func=views.set_d
 #samples
 
 # Say hello
-app.add_url_rule('/hello/<username>', 'say_hello', view_func=views.say_hello)
+#app.add_url_rule('/hello/<username>', 'say_hello', view_func=views.say_hello)
 
 # Examples list page
-app.add_url_rule('/examples', 'list_examples', view_func=views.list_examples, methods=['GET', 'POST'])
+app.add_url_rule('/list_log', 'list_log', view_func=views.list_log, methods=['GET', 'POST'])
+
+app.add_url_rule('/list_detail_log', 'list_detail_log', view_func=views.list_detail_log, methods=['GET', 'POST'])
+
 
 # Contrived admin-only view example
-app.add_url_rule('/admin_only', 'admin_only', view_func=views.admin_only)
+#app.add_url_rule('/admin_only', 'admin_only', view_func=views.admin_only)
 
 # Delete an example (post method only)
-app.add_url_rule('/examples/delete/<int:example_id>', view_func=views.delete_example, methods=['POST'])
+#app.add_url_rule('/examples/delete/<int:example_id>', view_func=views.delete_example, methods=['POST'])
 
 
 ## Error handlers

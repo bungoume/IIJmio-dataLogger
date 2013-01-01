@@ -27,9 +27,9 @@ class SimInfoModel(db.Model):
 
 class SimLogModel(db.Model):
     iccid = db.StringProperty(required=True)
-    date = db.DateProperty(required=True)
     usage = db.IntegerProperty(required=True, indexed=False)
-    updated_at = db.DateTimeProperty(auto_now=True, indexed=False)
+#    created_at = db.DateProperty(indexed=False)
+    updated_at = db.DateTimeProperty(auto_now=True)
 
 
 class SimDetailLogModel(db.Model):

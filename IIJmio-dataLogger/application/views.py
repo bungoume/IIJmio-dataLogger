@@ -11,13 +11,17 @@ For example the *say_hello* handler, handling the URL route '/hello/<username>',
 """
 
 
-from google.appengine.api import users
+#from google.appengine.api import users
 from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
 from google.appengine.ext import db
 
-from flask import render_template, flash, url_for, redirect
+from flask import render_template, flash, jsonify
+#, redirect, url_for
 
-from decorators import login_required, admin_required
+from decorators import admin_required
+#,login_required
+
+from secret_keys import USERNAME, PASSWORD, ICCID
 
 import datetime
 import time
@@ -27,15 +31,11 @@ import urllib2
 import cookielib
 import models
 import lxml.html
-import codecs
 
 
 def home():
-    return redirect(url_for('list_examples'))
-
-
-def say_hello(username):
-    return 'Hello %s' % username
+    return render_template('base.html')
+    #return redirect(url_for('list_log'))
 
 
 def set_sim_info(html):
@@ -76,19 +76,21 @@ def set_log():
     date = datetime.datetime.strptime(date, '%Y-%m-%d-----')
     date = datetime.date(date.year, date.month, date.day)
     items = []
+#    created_at = datetime.now()
 
     for i in range(3, 6):
         x2 = data[i].xpath('td[@class="data2-c"]/text()')
 
         iccid = x2[1].strip()
-        key_name = 'DATE=' + str(date) + '&ICCID=' + str(iccid)
+        #key_name = 'DATE=' + str(date) + '&ICCID=' + str(iccid)
         usage = int(re.search('[0-9]+', x2[3].strip()).group(0)) * 1024 * 1024
 
         item = models.SimLogModel(
-            key_name=key_name,
+        #    key_name=key_name,
             iccid=iccid,
             usage=usage,
-            date=date
+#            created_at=created_at
+        #    date=date
         )
         items.append(item)
 
@@ -144,12 +146,14 @@ def set_detail_log():
 
 
 def download(url):
-    name = ''
-    password = ''
-    opener = login_iij(name, password)
+    opener = login_iij(USERNAME, PASSWORD)
 
-    req = urllib2.Request(url)
-    conn = opener.open(req)
+    header = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.45 Safari/537.17'
+    }
+
+    req = urllib2.Request(url, None, header)
+    conn = opener.open(req, None, 30)
     cont = conn.read()
     return cont
 
@@ -164,7 +168,7 @@ def login_iij(name, password):
     data = urllib.urlencode(values)
 
     header = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.26 Safari/537.4'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.45 Safari/537.17'
     }
 
     cj = cookielib.CookieJar()
@@ -172,32 +176,57 @@ def login_iij(name, password):
     #opener = urllib2.build_opener()
     #opener.add_handler(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-
     urllib2.install_opener(opener)
 
     req = urllib2.Request(url, data, header)
-    opener.open(req)
+    opener.open(req, None, 30)
     #print cj
 
     return opener
 
 
-@login_required
-def list_examples():
-    """List all examples"""
-    examples = ""
-    return render_template('list_examples.html', examples=examples, form=form)
+@admin_required
+def list_log():
+    #query = models.SimLogModel.all()
+    #logs = query.fetch(limit=50)
+    data = []
 
+    for iccid in ICCID:
+        log = []
+        logs = models.SimLogModel.gql("WHERE iccid = :1 ORDER BY updated_at ASC", iccid)
+        for x in logs:
+            timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
+            y = [int(timestamp) * 1000, int(x.usage) / (1024 * 1024)]
+            log.append(y)
+        data.append({"name": iccid, "data": log})
 
-@login_required
-def delete_example(example_id):
-    """Delete an example object"""
+    logs = models.ServiceDetailLogModel.gql("ORDER BY updated_at ASC")
+    log = []
+    for x in logs:
+        timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
+        y = [int(timestamp) * 1000, 1000 - int(x.total_remaining_amount) / (1024 * 1024)]
+        log.append(y)
+    data.append({"name": "total", "data": log})
+
+    return jsonify(data=data)
+    #return render_template('list_log.html', log=log)
 
 
 @admin_required
-def admin_only():
-    """This view requires an admin account"""
-    return 'Super-seekrit admin page.'
+def list_detail_log():
+    query = models.SimDetailLogModel.all()
+
+    logs = query.fetch(limit=50)
+    log = []
+    for x in logs:
+        y = []
+        y['iccid'] = x.iccid
+        y['remaining_coupons'] = x.remaining_coupons
+        y['updated_at'] = (x.updated_at + datetime.timedelta(hours=9)).isoformat(' ')
+        log.append(y)
+    print log
+    return jsonify(log=log)
+    #return render_template('list_log.html', log=log)
 
 
 def warmup():
