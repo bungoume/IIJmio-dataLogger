@@ -70,7 +70,7 @@ var Graph = (function() {
     for (var i in json.data){
       var d = new Date();
       d.setTime(Number(i))
-      var temp = [Number(i)];
+      var temp = [d];
       for (var j in json.data[i]){
         var num = _.indexOf(iccidList,j);
         if(num === -1){
@@ -81,9 +81,14 @@ var Graph = (function() {
       }
       data.push(temp);
     }
-    data.unshift(iccidList);
 
-    var dataTable = google.visualization.arrayToDataTable(data);
+    //var dataTable = google.visualization.arrayToDataTable(data);
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn('datetime','Date');
+    for (var i=1,len=iccidList.length;i<len;i++){
+      dataTable.addColumn('number', iccidList[i]);
+    }
+    dataTable.addRows(data);
     dashboard.draw(dataTable);
   }
 
