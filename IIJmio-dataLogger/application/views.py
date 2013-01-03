@@ -204,6 +204,8 @@ def list_log():
         timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
         timestamp = int(timestamp) * 1000
         usage = 1000 - (int(x.total_remaining_amount) / (1024 * 1024))
+        if not str(timestamp) in data:
+            data[str(timestamp)] = {}
         data[str(timestamp)]["total"] = usage
 
     # dataList = []

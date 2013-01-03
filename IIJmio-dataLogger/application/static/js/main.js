@@ -82,7 +82,6 @@ var Graph = (function() {
       data.push(temp);
     }
 
-    //var dataTable = google.visualization.arrayToDataTable(data);
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('datetime','Date');
     for (var i=1,len=iccidList.length;i<len;i++){
