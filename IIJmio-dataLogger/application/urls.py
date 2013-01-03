@@ -51,8 +51,8 @@ app.add_url_rule('/list_detail_log', 'list_detail_log', view_func=views.list_det
 def page_not_found(e):
     return render_template('404.html'), 404
 
+
 # Handle 500 errors
 @app.errorhandler(500)
 def server_error(e):
     return render_template('500.html'), 500
-

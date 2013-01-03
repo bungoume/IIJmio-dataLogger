@@ -34,7 +34,7 @@ import lxml.html
 
 
 def home():
-    return render_template('base.html')
+    return render_template('index.html')
     #return redirect(url_for('list_log'))
 
 
@@ -189,24 +189,22 @@ def login_iij(name, password):
 def list_log():
     #query = models.SimLogModel.all()
     #logs = query.fetch(limit=50)
-    data = []
-
-    for iccid in ICCID:
-        log = []
-        logs = models.SimLogModel.gql("WHERE iccid = :1 ORDER BY updated_at ASC", iccid)
-        for x in logs:
-            timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
-            y = [int(timestamp) * 1000, int(x.usage) / (1024 * 1024)]
-            log.append(y)
-        data.append({"name": iccid, "data": log})
-
-    logs = models.ServiceDetailLogModel.gql("ORDER BY updated_at ASC")
-    log = []
+    data = {}
+    logs = models.SimLogModel.gql("ORDER BY updated_at ASC LIMIT 5000")
     for x in logs:
         timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
-        y = [int(timestamp) * 1000, 1000 - int(x.total_remaining_amount) / (1024 * 1024)]
-        log.append(y)
-    data.append({"name": "total", "data": log})
+        timestamp = int(timestamp) * 1000
+        usage = int(x.usage) / (1024 * 1024)
+        if not str(timestamp) in data:
+            data[str(timestamp)] = {}
+        data[str(timestamp)][x.iccid] = usage
+
+    logs = models.ServiceDetailLogModel.gql("ORDER BY updated_at ASC LIMIT 1000")
+    for x in logs:
+        timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
+        timestamp = int(timestamp) * 1000
+        usage = 1000 - (int(x.total_remaining_amount) / (1024 * 1024))
+        data[str(timestamp)]["total"] = usage
 
     return jsonify(data=data)
     #return render_template('list_log.html', log=log)

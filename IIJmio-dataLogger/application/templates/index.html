@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title%}{% endblock %}
+
+{% block style_block %}<!-- page-specific CSS -->
+<style> body { padding-top: 90px; } </style>
+{% endblock %}
+
+{% block head_script %}<!-- defer-incapable JS block -->{% endblock %}
+
+{% block content %}
+<div id="dashboard_div">
+  <!--Divs that will hold each control and chart-->
+  <div id="chart_div"></div>
+  <div id="control_div"></div>
+</div>
+{% endblock %}
+
+{% block footer %}<!-- footer -->{% endblock %}
+
+{% block tail_script %}<!-- defer-capable JS block -->{% endblock %}
