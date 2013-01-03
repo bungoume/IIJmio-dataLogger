@@ -21,7 +21,7 @@ from flask import render_template, flash, jsonify
 from decorators import admin_required
 #,login_required
 
-from secret_keys import USERNAME, PASSWORD, ICCID
+from secret_keys import USERNAME, PASSWORD
 
 import datetime
 import time
@@ -205,6 +205,11 @@ def list_log():
         timestamp = int(timestamp) * 1000
         usage = 1000 - (int(x.total_remaining_amount) / (1024 * 1024))
         data[str(timestamp)]["total"] = usage
+
+    # dataList = []
+    # for key, value in data.iteritems():
+    #     temp = [int(key), value]
+    #     dataList.append(temp)
 
     return jsonify(data=data)
     #return render_template('list_log.html', log=log)
