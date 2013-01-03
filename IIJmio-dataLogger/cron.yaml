@@ -7,3 +7,4 @@ cron:
   url: /cron/set_detail_log
   schedule: every 30 minutes synonym for from 00:10 to 23:59
   timezone: Asia/Tokyo
+  target: tasks
