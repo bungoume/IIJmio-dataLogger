@@ -82,7 +82,7 @@ var Graph = (function() {
       data.push(temp);
     }
     data = _.sortBy(data, function(array){ return array[0]; });
-
+    data = _.filter(data, function(array){ return array.length == 4;});
 
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('datetime','Date');
@@ -93,7 +93,9 @@ var Graph = (function() {
     dashboard.draw(dataTable);
   }
 
-  function update(){}
+  function update(){
+
+  }
 
   return {
     init: init,

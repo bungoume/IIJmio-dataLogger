@@ -189,7 +189,7 @@ def list_log():
     #query = models.SimLogModel.all()
     #logs = query.fetch(limit=50)
     data = {}
-    logs = models.SimLogModel.gql("ORDER BY updated_at ASC LIMIT 3000")
+    logs = models.SimLogModel.gql("ORDER BY updated_at DESC LIMIT 3000")
     for x in logs:
         timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
         timestamp = int(timestamp) * 1000
