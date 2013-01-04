@@ -76,8 +76,7 @@ def set_log():
     date = datetime.datetime.strptime(date, '%Y-%m-%d-----')
     date = datetime.date(date.year, date.month, date.day)
     items = []
-#    created_at = datetime.now()
-
+    #created_at = datetime.now()
     for i in range(3, 6):
         x2 = data[i].xpath('td[@class="data2-c"]/text()')
 
@@ -89,7 +88,7 @@ def set_log():
         #    key_name=key_name,
             iccid=iccid,
             usage=usage,
-#            created_at=created_at
+        #    created_at=created_at
         #    date=date
         )
         items.append(item)
