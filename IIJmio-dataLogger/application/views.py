@@ -199,14 +199,14 @@ def list_log():
             data[str(timestamp)] = {}
         data[str(timestamp)][x.iccid] = usage
 
-    logs = models.ServiceDetailLogModel.gql("ORDER BY updated_at ASC LIMIT 1000")
-    for x in logs:
-        timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
-        timestamp = int(timestamp) * 1000
-        usage = 1000 - (int(x.total_remaining_amount) / (1024 * 1024))
-        if not str(timestamp) in data:
-            data[str(timestamp)] = {}
-        data[str(timestamp)]["total"] = usage
+    # logs = models.ServiceDetailLogModel.gql("ORDER BY updated_at ASC LIMIT 1000")
+    # for x in logs:
+    #     timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
+    #     timestamp = int(timestamp) * 1000
+    #     usage = 1000 - (int(x.total_remaining_amount) / (1024 * 1024))
+    #     if not str(timestamp) in data:
+    #         data[str(timestamp)] = {}
+    #     data[str(timestamp)]["total"] = usage
 
     # dataList = []
     # for key, value in data.iteritems():

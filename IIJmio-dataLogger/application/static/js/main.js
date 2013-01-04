@@ -27,7 +27,7 @@ var Graph = (function() {
           // Display a single series that shows the closing value of the stock.
           // Thus, this view has two columns: the date (axis) and the stock value (line series).
           'chartView': {
-            'columns': [0, 4]
+            //'columns': [0, 4]
           },
           // 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
           'minRangeSize': 86400000
@@ -55,7 +55,7 @@ var Graph = (function() {
               return dataTable.getFormattedValue(rowIndex, 0);
             },
             'type': 'string'
-          }, 1, 2, 3, 4]
+          }, 1, 2, 3]
       }
     });
 
@@ -81,6 +81,8 @@ var Graph = (function() {
       }
       data.push(temp);
     }
+    data = _.sortBy(data, function(array){ return array[0]; });
+
 
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('datetime','Date');
