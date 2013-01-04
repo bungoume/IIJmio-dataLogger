@@ -191,11 +191,11 @@ def list_log():
     data = {}
     logs = models.SimLogModel.gql("ORDER BY updated_at DESC LIMIT 3000")
     for x in logs:
-        timestamp = time.mktime((x.updated_at + datetime.timedelta(hours=9)).timetuple())
-        timestamp = int(timestamp) * 1000
+        timestamp = time.mktime((x.updated_at).timetuple())
+        timestamp = str(int(timestamp))
         usage = int(x.usage) / (1024 * 1024)
-        if not str(timestamp) in data:
-            data[str(timestamp)] = {}
+        if not timestamp in data:
+            data[timestamp] = {}
         data[str(timestamp)][x.iccid] = usage
 
     # logs = models.ServiceDetailLogModel.gql("ORDER BY updated_at ASC LIMIT 1000")

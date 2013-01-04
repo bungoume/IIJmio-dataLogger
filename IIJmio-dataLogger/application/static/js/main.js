@@ -44,7 +44,7 @@ var Graph = (function() {
         // Use the same chart area width as the control for axis alignment.
         'chartArea': {'height': '80%', 'width': '90%'},
         'hAxis': {'slantedText': false},
-        'vAxis': {'viewWindow': {'min': 0, 'max': 20}},
+        //'vAxis': {'viewWindow': {'min': 0, 'max': 20}},
         'legend': {'position': 'none'}
       },
       // Convert the first column from 'date' to 'string'.
@@ -69,7 +69,7 @@ var Graph = (function() {
     var iccidList = ["datetime"];
     for (var i in json.data){
       var d = new Date();
-      d.setTime(Number(i))
+      d.setTime(Number(i)*1000)
       var temp = [d];
       for (var j in json.data[i]){
         var num = _.indexOf(iccidList,j);
