@@ -84,6 +84,15 @@ var Graph = (function() {
     data = _.sortBy(data, function(array){ return array[0]; });
     data = _.filter(data, function(array){ return array.length == 4;});
 
+    //make diff
+    for (var i=0,len=data.length-1;i<len;++i){
+      for(var j=1;j<4;++j){
+        var temp = data[i+1][j] - data[i][j];
+        if(temp>=0)
+          data[i][j] = temp;
+      }
+    }
+
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('datetime','Date');
     for (var i=1,len=iccidList.length;i<len;i++){

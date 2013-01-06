@@ -76,8 +76,14 @@ def set_log():
     date = datetime.datetime.strptime(date, '%Y-%m-%d-----')
     date = datetime.date(date.year, date.month, date.day)
     items = []
-    #created_at = datetime.now()
-    for i in range(3, 6):
+    created_at = datetime.datetime.now()
+    range_list = range(3, 6)
+
+    # 15時(JPN0時)台は前日のログを取得
+    if created_at.hour == 15:
+        range_list = range(7, 10)
+
+    for i in range_list:
         x2 = data[i].xpath('td[@class="data2-c"]/text()')
 
         iccid = x2[1].strip()
