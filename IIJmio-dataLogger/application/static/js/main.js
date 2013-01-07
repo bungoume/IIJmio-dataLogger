@@ -91,6 +91,7 @@ var Graph = (function() {
         data[i][j] = temp>=0? temp: data[i+1][j];
       }
     }
+    data.pop();
 
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('datetime','Date');
