@@ -66,6 +66,7 @@ var Graph = (function() {
   function _drawChart(json) {
     //var data = _getData();
     var data = [];
+    var day_data = [];
     var iccidList = ["datetime"];
     for (var i in json.data){
       var d = new Date();
@@ -84,21 +85,28 @@ var Graph = (function() {
     data = _.sortBy(data, function(array){ return array[0]; });
     data = _.filter(data, function(array){ return array.length == 4;});
 
-    //make diff
     for (var i=0,len=data.length-1;i<len;++i){
+      //一日単位の集計
+      if(data[i][0].getHours() == 23){//いずれdata[i][0].getHours() == 0に変更予定
+        day_data.push(data[i]);
+      }
+      //make diff
       for(var j=1;j<4;++j){
         var temp = data[i+1][j] - data[i][j];
         data[i][j] = temp>=0? temp: data[i+1][j];
       }
     }
-    data.pop();
+    day_data.push(data.pop());
+
 
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('datetime','Date');
+    //dataTable.addColumn('date','Date');
     for (var i=1,len=iccidList.length;i<len;i++){
       dataTable.addColumn('number', iccidList[i]);
     }
     dataTable.addRows(data);
+    //dataTable.addRows(day_data);
     dashboard.draw(dataTable);
   }
 
