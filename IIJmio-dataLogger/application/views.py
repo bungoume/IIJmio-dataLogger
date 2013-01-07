@@ -76,9 +76,10 @@ def set_log():
     date = datetime.datetime.strptime(date, '%Y-%m-%d-----')
     date = datetime.date(date.year, date.month, date.day)
     items = []
-    created_at = datetime.datetime.now()
-    range_list = range(3, 6)
+    d = datetime.datetime.utcnow()
+    created_at = datetime.datetime(d.year, d.month, d.day, d.hour)
 
+    range_list = range(3, 6)
     # 15時(JPN0時)台は前日のログを取得
     if created_at.hour == 15:
         range_list = range(7, 10)
