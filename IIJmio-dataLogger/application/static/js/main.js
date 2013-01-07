@@ -88,8 +88,7 @@ var Graph = (function() {
     for (var i=0,len=data.length-1;i<len;++i){
       for(var j=1;j<4;++j){
         var temp = data[i+1][j] - data[i][j];
-        if(temp>=0)
-          data[i][j] = temp;
+        data[i][j] = temp>=0? temp: data[i+1][j];
       }
     }
 
