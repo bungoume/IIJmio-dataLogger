@@ -198,7 +198,10 @@ def list_log():
     data = {}
     logs = models.SimLogModel.gql("ORDER BY updated_at DESC LIMIT 3000")
     for x in logs:
-        timestamp = time.mktime((x.updated_at).timetuple())
+        #時間ちょうど付近での誤差修正（+5することで四捨五入的な）
+        d = x.updated_at + datetime.timedelta(minutes=5)
+        d = datetime.datetime(d.year, d.month, d.day, d.hour)
+        timestamp = time.mktime(d.timetuple())
         timestamp = str(int(timestamp))
         usage = int(x.usage) / (1024 * 1024)
         if not timestamp in data:
